@@ -26,7 +26,30 @@ gem install circleci_deployment_notifier
 
 ## Usage
 
-TODO: Write usage instructions here
+Add the following lines to your `circle.yml` in the deployments section:
+
+```sh
+gem install circleci_deployment_notifier
+circleci_deployment_notify_slack -a "Application Name" -u "https://hooks.slack.com/services/WEBHOOK"
+```
+
+Here's an example deployment section from `circle.yml`:
+```yml
+deployment:
+  staging:
+    branch: master
+    commands:
+    - # TODO: something to deploy the application to staging
+    - gem install circleci_deployment_notifier
+    - circleci_deployment_notify_slack -a "Application Staging" -u "https://hooks.slack.com/services/WEBHOOK"
+  production:
+    tag: /v[0-9]+\.[0-9]+\.[0-9]+/
+    owner: MyOrganization
+    commands:
+    - # TODO: something to deploy the application to production
+    - gem install circleci_deployment_notifier
+    - circleci_deployment_notify_slack -a "Application Production" -u "https://hooks.slack.com/services/WEBHOOK"
+```
 
 ## Development
 
