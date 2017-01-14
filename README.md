@@ -1,5 +1,7 @@
 # CircleCI Deployment Notifier
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0ad62b4c5bea4e43a6b217664fecf639)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=RobinDaugherty/circleci_deployment_notifier&utm_campaign=badger)
+
 Sends deployment notifications based on deployments that occur on CircleCI.
 
 ## Installation
