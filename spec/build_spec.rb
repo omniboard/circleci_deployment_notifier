@@ -27,12 +27,6 @@ describe CircleciDeploymentNotifier::Build do
         ENV.delete 'CIRCLE_BUILD_URL'
       end
 
-      #   .
-      #      with(:body => ,
-      #           :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Ruby'}).
-      #      to_return(:status => 200, :body => "", :headers => {})
-      # }
-
       it 'sends a Slack webhook request' do
         send_to_slack
         expect(slack_request).to have_been_made
