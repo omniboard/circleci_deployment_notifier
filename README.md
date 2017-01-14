@@ -2,7 +2,19 @@
 
 Sends deployment notifications based on deployments that occur on CircleCI.
 
+Assumptions:
+
+- Using CircleCI.
+- Using Github.
+- Using Slack for notifications.
+
+You can also:
+
+- Deploy releases that are tagged using Github Releases.
+
 ## Installation
+
+Requires Ruby 2.0.0 or higher.
 
 ```sh
 gem install circleci_deployment_notifier
