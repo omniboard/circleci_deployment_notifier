@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'circleci_deployment_notifier'
+require 'slop'
+require 'uri'
+
+puts "CircleCI Deployment Notify Slack"
+
+opts = Slop.parse do |o|
+  o.string '-a', '--app-name', 'Name of the application that was deployed (e.g. "Asgard Production")'
+  o.string '-u', '--webhook-url', 'Slack Webhook URL'
+  o.on '--version', 'print the version' do
+    puts CircleciDeploymentNotifier::VERSION
+    exit
+  end
+end
+
+unless ENV['CIRCLECI']
+  STDERR.puts "ERROR: This is not a CircleCI build (missing environment variables)."
+  exit 1
+end
+
+# unless ARGV.size == 2
+#   STDERR.puts "Not enough arguments."
+#   print_help
+# end
+
+app_name = opts[:app_name]
+webhook_url = opts[:webhook_url]
+
+if webhook_url.nil?
+  STDERR.puts "ERROR: Missing Slack Webhook URL"
+  puts opts
+  exit 1
+end
+
+if app_name.nil?
+  STDERR.puts "ERROR: Missing App Name"
+  puts opts
+  exit 1
+end
+
+unless webhook_url =~ /\A#{URI::regexp(['http', 'https'])}\z/
+  STDERR.puts "ERROR: Slack Webhook URL is not a valid URL: #{webhook_url}"
+  puts opts
+  exit 1
+end
+
+CircleciDeploymentNotifier::Build.new(app_name: app_name).send_to_slack(webhook_url: webhook_url)
