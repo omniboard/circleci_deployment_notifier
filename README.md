@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/RobinDaugherty/circleci_deployment_notifier.svg?branch=master)](https://travis-ci.org/RobinDaugherty/circleci_deployment_notifier)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b76abb83eb5449499cbe3740c147715e)](https://www.codacy.com/app/robindaugherty/circleci_deployment_notifier?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RobinDaugherty/circleci_deployment_notifier&amp;utm_campaign=Badge_Grade)
 [![Codacy Coverage](https://api.codacy.com/project/badge/Coverage/b76abb83eb5449499cbe3740c147715e)](https://www.codacy.com/app/robindaugherty/circleci_deployment_notifier?utm_source=github.com&utm_medium=referral&utm_content=RobinDaugherty/circleci_deployment_notifier&utm_campaign=Badge_Coverage)
 
@@ -63,6 +63,15 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/RobinDaugherty/circleci_deployment_notifier.
+
+## FAQ
+
+### Why is this project built on Travis when it's specifically for CircleCI?
+
+CircleCI does not support builds against multiple versions of Ruby, so for a tool like this, Travis
+is a better fit.
+This gem is for use by applications, where it will be built on a single version of Ruby and deployed
+to staging and/or production infrastructure owned by the team.
 
 ## License
 
