@@ -14,22 +14,22 @@ RSpec.describe CircleciDeploymentNotifier::Build do
     ENV.delete 'CIRCLE_BUILD_URL'
   end
 
-  def prepare_for_branch_build
+  def prepare_for_build
     ENV['CIRCLE_SHA1'] = "abc123"
-    ENV['CIRCLE_BRANCH'] = "master"
     ENV['CIRCLE_USERNAME'] = "RobinDaugherty"
     ENV['CIRCLE_REPOSITORY_URL'] = "https://github.com/RobinDaugherty/circleci_deployment_notifier"
     ENV['CIRCLE_BUILD_NUM'] = "1100"
     ENV['CIRCLE_BUILD_URL'] = "https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100"
   end
 
+  def prepare_for_branch_build
+    prepare_for_build
+    ENV['CIRCLE_BRANCH'] = "master"
+  end
+
   def prepare_for_tag_build
-    ENV['CIRCLE_SHA1'] = "abc123"
+    prepare_for_build
     ENV['CIRCLE_TAG'] = "v1.0.0"
-    ENV['CIRCLE_USERNAME'] = "RobinDaugherty"
-    ENV['CIRCLE_REPOSITORY_URL'] = "https://github.com/RobinDaugherty/circleci_deployment_notifier"
-    ENV['CIRCLE_BUILD_NUM'] = "1100"
-    ENV['CIRCLE_BUILD_URL'] = "https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100"
   end
 
   describe '#send_to_slack' do
