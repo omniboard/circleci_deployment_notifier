@@ -65,7 +65,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
 ]
 }
               JSON
-            }
+            },
           )
           send_to_slack
           expect(request_with_body).to have_been_made
