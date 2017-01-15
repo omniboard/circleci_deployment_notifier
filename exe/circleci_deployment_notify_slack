@@ -20,22 +20,17 @@ unless ENV['CIRCLECI']
   exit 1
 end
 
-# unless ARGV.size == 2
-#   STDERR.puts "Not enough arguments."
-#   print_help
-# end
-
 app_name = opts[:app_name]
 webhook_url = opts[:webhook_url]
 
-if webhook_url.nil?
-  STDERR.puts "ERROR: Missing Slack Webhook URL"
+if app_name.nil?
+  STDERR.puts "ERROR: Missing App Name"
   puts opts
   exit 1
 end
 
-if app_name.nil?
-  STDERR.puts "ERROR: Missing App Name"
+if webhook_url.nil?
+  STDERR.puts "ERROR: Missing Slack Webhook URL"
   puts opts
   exit 1
 end
