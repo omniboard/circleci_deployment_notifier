@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+
+require 'circleci_deployment_notifier'
+require 'slop'
+require 'uri'
+
+puts "CircleCI Deployment Notify New Relic"
+
+opts = Slop.parse do |o|
+  o.string '-a', '--app-name', 'Name of the application that was deployed (e.g. "Asgard Production")'
+  o.string '-u', '--nr-app-id', 'New Relic App ID'
+  o.on '--version', 'print the version' do
+    puts CircleciDeploymentNotifier::VERSION
+    exit
+  end
+end
+
+unless ENV['CIRCLECI']
+  STDERR.puts "ERROR: This is not a CircleCI build (missing environment variables)."
+  exit 1
+end
+
+app_name = opts[:app_name]
+nr_app_id = opts[:nr_app_id]
+
+if app_name.nil?
+  STDERR.puts "ERROR: Missing App Name"
+  puts opts
+  exit 1
+end
+
+if nr_app_id.nil?
+  STDERR.puts "ERROR: Missing New Relic App ID"
+  puts opts
+  exit 1
+end
+
+CircleciDeploymentNotifier::Build.new(app_name: app_name)
+  .send_to_new_relic(new_relic_app_id: nr_app_id)

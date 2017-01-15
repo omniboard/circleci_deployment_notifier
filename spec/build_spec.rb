@@ -94,4 +94,64 @@ RSpec.describe CircleciDeploymentNotifier::Build do
       end
     end
   end
+
+  describe '#send_to_new_relic' do
+    subject(:send_to_new_relic) {
+      described_instance.send_to_new_relic(
+        new_relic_api_key: new_relic_api_key,
+        new_relic_app_id: new_relic_app_id,
+      )
+    }
+    let(:new_relic_api_key) { "abcdefg" }
+    let(:new_relic_app_id) { "12345" }
+    let!(:new_relic_request) {
+      stub_request(:post, "https://api.newrelic.com/v2/applications/12345/deployments.json")
+    }
+
+    context 'for a branch build' do
+      before do
+        prepare_for_branch_build
+      end
+
+      it 'sends a New Relic deployment request' do
+        send_to_new_relic
+        expect(new_relic_request).to have_been_made
+      end
+      context 'the New Relic request' do
+        it 'has the correct body' do
+          request_with_body = new_relic_request.with(
+            body: "{\"deployment\":"\
+              "{\"revision\":\"master\",\"user\":\"RobinDaugherty\","\
+              "\"description\":\"https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/abc123\"}"\
+              "}"
+          )
+          send_to_new_relic
+          expect(request_with_body).to have_been_made
+        end
+      end
+    end
+
+    context 'for a tag build' do
+      before do
+        prepare_for_tag_build
+      end
+
+      it 'sends a New Relic deployment request' do
+        send_to_new_relic
+        expect(new_relic_request).to have_been_made
+      end
+      context 'the New Relic request' do
+        it 'has the correct body' do
+          request_with_body = new_relic_request.with(
+            body: "{\"deployment\":"\
+              "{\"revision\":\"v1.0.0\",\"user\":\"RobinDaugherty\","\
+              "\"description\":\"https://github.com/RobinDaugherty/circleci_deployment_notifier/releases/tag/v1.0.0\"}"\
+              "}"
+          )
+          send_to_new_relic
+          expect(request_with_body).to have_been_made
+        end
+      end
+    end
+  end
 end
