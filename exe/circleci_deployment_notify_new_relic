@@ -8,7 +8,8 @@ puts "CircleCI Deployment Notify New Relic"
 
 opts = Slop.parse do |o|
   o.string '-a', '--app-name', 'Name of the application that was deployed (e.g. "Asgard Production")'
-  o.string '-u', '--nr-app-id', 'New Relic App ID'
+  o.string '-k', '--api-key', 'New Relic API Key'
+  o.string '-i', '--app-id', 'New Relic App ID'
   o.on '--version', 'print the version' do
     puts CircleciDeploymentNotifier::VERSION
     exit
@@ -21,7 +22,8 @@ unless ENV['CIRCLECI']
 end
 
 app_name = opts[:app_name]
-nr_app_id = opts[:nr_app_id]
+app_id = opts[:app_id]
+api_key = opts[:api_key]
 
 if app_name.nil?
   STDERR.puts "ERROR: Missing App Name"
@@ -29,11 +31,17 @@ if app_name.nil?
   exit 1
 end
 
-if nr_app_id.nil?
+if api_key.nil?
+  STDERR.puts "ERROR: Missing New Relic API Key"
+  puts opts
+  exit 1
+end
+
+if app_id.nil?
   STDERR.puts "ERROR: Missing New Relic App ID"
   puts opts
   exit 1
 end
 
 CircleciDeploymentNotifier::Build.new(app_name: app_name)
-  .send_to_new_relic(new_relic_app_id: nr_app_id)
+  .send_to_new_relic(new_relic_api_key: api_key, new_relic_app_id: app_id)
