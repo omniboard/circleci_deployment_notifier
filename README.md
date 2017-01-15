@@ -11,7 +11,7 @@ Assumptions:
 
 - Using CircleCI.
 - Using Github.
-- Using Slack for notifications.
+- Using Slack for notifications and/or using New Relic.
 
 You can also:
 
@@ -26,12 +26,13 @@ Add the following commands to your `circle.yml` deployment section:
 ```sh
 gem install circleci_deployment_notifier
 circleci_deployment_notify_slack -a "Application Name" -u "https://hooks.slack.com/services/WEBHOOK"
+circleci_deployment_notify_new_relic -a "Application Name" --api-key "12345abcde" --app-id "12345678"
 ```
 
-It's best to use environment variables for sensitive information list Slack webhook URLs.
+It's best to use environment variables for sensitive information such as Slack webhook URLs or API keys.
 
 So here's an example `circle.yml` deployment section that 
-assumes you've set the environment variable `DEPLOYMENT_SLACK_WEBHOOK_URL`:
+assumes you've set the environment variables `DEPLOYMENT_SLACK_WEBHOOK_URL` and `NEW_RELIC_API_KEY`:
 ```yml
 deployment:
   staging:
@@ -40,6 +41,7 @@ deployment:
     - # TODO: something to deploy the application to staging
     - gem install circleci_deployment_notifier
     - circleci_deployment_notify_slack -a "Application Staging" -u $DEPLOYMENT_SLACK_WEBHOOK_URL
+    - circleci_deployment_notify_new_relic -a "Application Staging" --api-key $NEW_RELIC_API_KEY --app-id "12345678"
   production:
     tag: /v[0-9]+\.[0-9]+\.[0-9]+/
     owner: MyOrganization
@@ -47,12 +49,30 @@ deployment:
     - # TODO: something to deploy the application to production
     - gem install circleci_deployment_notifier
     - circleci_deployment_notify_slack -a "Application Production" -u $DEPLOYMENT_SLACK_WEBHOOK_URL
+    - circleci_deployment_notify_new_relic -a "Application Staging" --api-key $NEW_RELIC_API_KEY --app-id "87654321"
 ```
 
+### Tag Deploys
 That `production` section is designed to build and deploy for tags like "v1.0.0" that are created in
 the fork of the repo that belongs to MyOrganization.
 (So tags created in forks do not cause a build or deployment.)
 See [CircleCI docs](https://circleci.com/docs/configuration/#tags) for more info.
+
+### Slack Webhook
+
+Create an Incoming Webhook service in Slack, and assign it the channel you want it to post.
+If you want to post staging and production notifications to different Slack channels, you will need
+to create different Webhooks for each.
+
+### New Relic
+
+To get the New Relic App ID for each application, you must first have the application running and
+reporting to New Relic.
+This creates the application in New Relic and it will appear in the APM area of
+[rpm.newrelic.com](https://rpm.newrelic.com).
+
+Find the application in New Relic, and get the App ID from its URL.
+The URL will look like `https://rpm.newrelic.com/accounts/<your_account_number>/applications/<app_id>`
 
 ## Development
 
