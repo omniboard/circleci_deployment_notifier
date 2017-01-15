@@ -3,14 +3,19 @@ require 'slack-notifier'
 module CircleciDeploymentNotifier
   ##
   # Sends notifications to Slack.
-  # Builds the message from a BuildInfo object.
+  # Builds the message using a BuildInfo object.
   class Slack
+    ##
+    # @param webhook_url [String] Slack Webhook URL
+    # @param app_name [String] Name of the application that was deployed.
+    # @param build_info [BuildInfo]
     def initialize(webhook_url:, app_name:, build_info:)
       self.webhook_url = webhook_url
       self.app_name = app_name
       self.build_info = build_info
     end
 
+    # Sends the message to Slack.
     def send
       slack_notifier.post message
     end

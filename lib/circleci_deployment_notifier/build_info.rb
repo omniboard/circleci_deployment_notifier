@@ -1,4 +1,7 @@
 module CircleciDeploymentNotifier
+  ##
+  # Gets build information from the environment.
+  # Expects and currently only works with builds of Github repositories.
   class BuildInfo
     def commit_hash
       ENV['CIRCLE_SHA1']
