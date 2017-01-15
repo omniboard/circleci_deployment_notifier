@@ -50,7 +50,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
         it 'has the correct body' do
           request_with_body = slack_request.with(
             body: {
-              "payload" => <<-JSON.gsub("\n", ''),
+              "payload" => <<-JSON.delete("\n"),
 {
 "username":"Application Name Deployments",
 "attachments":
@@ -86,7 +86,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
         it 'has the correct body' do
           request_with_body = slack_request.with(
             body: {
-              "payload" => <<-JSON.gsub("\n", ''),
+              "payload" => <<-JSON.delete("\n"),
 {
 "username":"Application Name Deployments",
 "attachments":[
@@ -136,7 +136,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
       context 'the New Relic request' do
         it 'has the correct body' do
           request_with_body = new_relic_request.with(
-            body: <<-JSON.gsub("\n", ''),
+            body: <<-JSON.delete("\n"),
 {
 "deployment":
 {
@@ -164,7 +164,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
       context 'the New Relic request' do
         it 'has the correct body' do
           request_with_body = new_relic_request.with(
-            body: <<-JSON.gsub("\n", ''),
+            body: <<-JSON.delete("\n"),
 {
 "deployment":
 {
