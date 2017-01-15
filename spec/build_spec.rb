@@ -1,8 +1,36 @@
 require "spec_helper"
 
-describe CircleciDeploymentNotifier::Build do
+RSpec.describe CircleciDeploymentNotifier::Build do
   subject(:described_instance) { described_class.new(app_name: app_name) }
   let(:app_name) { "Application Name" }
+
+  after do
+    ENV.delete 'CIRCLE_SHA1'
+    ENV.delete 'CIRCLE_BRANCH'
+    ENV.delete 'CIRCLE_TAG'
+    ENV.delete 'CIRCLE_USERNAME'
+    ENV.delete 'CIRCLE_REPOSITORY_URL'
+    ENV.delete 'CIRCLE_BUILD_NUM'
+    ENV.delete 'CIRCLE_BUILD_URL'
+  end
+
+  def prepare_for_branch_build
+    ENV['CIRCLE_SHA1'] = "abc123"
+    ENV['CIRCLE_BRANCH'] = "master"
+    ENV['CIRCLE_USERNAME'] = "RobinDaugherty"
+    ENV['CIRCLE_REPOSITORY_URL'] = "https://github.com/RobinDaugherty/circleci_deployment_notifier"
+    ENV['CIRCLE_BUILD_NUM'] = "1100"
+    ENV['CIRCLE_BUILD_URL'] = "https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100"
+  end
+
+  def prepare_for_tag_build
+    ENV['CIRCLE_SHA1'] = "abc123"
+    ENV['CIRCLE_TAG'] = "v1.0.0"
+    ENV['CIRCLE_USERNAME'] = "RobinDaugherty"
+    ENV['CIRCLE_REPOSITORY_URL'] = "https://github.com/RobinDaugherty/circleci_deployment_notifier"
+    ENV['CIRCLE_BUILD_NUM'] = "1100"
+    ENV['CIRCLE_BUILD_URL'] = "https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100"
+  end
 
   describe '#send_to_slack' do
     subject(:send_to_slack) { described_instance.send_to_slack(webhook_url: webhook_url) }
@@ -11,20 +39,7 @@ describe CircleciDeploymentNotifier::Build do
 
     context 'for a branch build' do
       before do
-        ENV['CIRCLE_SHA1'] = "abc123"
-        ENV['CIRCLE_BRANCH'] = "master"
-        ENV['CIRCLE_USERNAME'] = "RobinDaugherty"
-        ENV['CIRCLE_REPOSITORY_URL'] = "https://github.com/RobinDaugherty/circleci_deployment_notifier"
-        ENV['CIRCLE_BUILD_NUM'] = "1100"
-        ENV['CIRCLE_BUILD_URL'] = "https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100"
-      end
-      after do
-        ENV.delete 'CIRCLE_SHA1'
-        ENV.delete 'CIRCLE_BRANCH'
-        ENV.delete 'CIRCLE_USERNAME'
-        ENV.delete 'CIRCLE_REPOSITORY_URL'
-        ENV.delete 'CIRCLE_BUILD_NUM'
-        ENV.delete 'CIRCLE_BUILD_URL'
+        prepare_for_branch_build
       end
 
       it 'sends a Slack webhook request' do
@@ -52,21 +67,7 @@ describe CircleciDeploymentNotifier::Build do
 
     context 'for a tag build' do
       before do
-        ENV['CIRCLE_SHA1'] = "abc123"
-        ENV['CIRCLE_TAG'] = "v1.0.0"
-        ENV['CIRCLE_USERNAME'] = "RobinDaugherty"
-        ENV['CIRCLE_REPOSITORY_URL'] = "https://github.com/RobinDaugherty/circleci_deployment_notifier"
-        ENV['CIRCLE_BUILD_NUM'] = "1100"
-        ENV['CIRCLE_BUILD_URL'] = "https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100"
-      end
-      after do
-        ENV.delete 'CIRCLECI'
-        ENV.delete 'CIRCLE_SHA1'
-        ENV.delete 'CIRCLE_TAG'
-        ENV.delete 'CIRCLE_USERNAME'
-        ENV.delete 'CIRCLE_REPOSITORY_URL'
-        ENV.delete 'CIRCLE_BUILD_NUM'
-        ENV.delete 'CIRCLE_BUILD_URL'
+        prepare_for_tag_build
       end
 
       it 'sends a Slack webhook request' do
