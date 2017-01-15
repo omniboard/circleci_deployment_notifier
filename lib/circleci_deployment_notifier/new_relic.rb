@@ -55,7 +55,7 @@ module CircleciDeploymentNotifier
           revision: build_info.tag_name || build_info.branch_name,
           user: build_info.builder_username,
           description: build_info.tag_release_notes_url || build_info.commit_browse_url,
-        }
+        },
       }
     end
 

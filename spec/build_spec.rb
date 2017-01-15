@@ -56,7 +56,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
                 "\"text\":\"<https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/abc123|master>\""\
                 ",\"footer\":\"deployed by <https://github.com/RobinDaugherty|RobinDaugherty> "\
                 "in <https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100|build 1100>\","\
-                "\"footer_icon\":\"https://github.com/RobinDaugherty.png\"}]}"
+                "\"footer_icon\":\"https://github.com/RobinDaugherty.png\"}]}",
             }
           )
           send_to_slack
@@ -85,7 +85,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
                 "(<https://github.com/RobinDaugherty/circleci_deployment_notifier/releases/tag/v1.0.0|release notes>)\""\
                 ",\"footer\":\"deployed by <https://github.com/RobinDaugherty|RobinDaugherty> in "\
                 "<https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100|build 1100>\","\
-                "\"footer_icon\":\"https://github.com/RobinDaugherty.png\"}]}"
+                "\"footer_icon\":\"https://github.com/RobinDaugherty.png\"}]}",
             }
           )
           send_to_slack
@@ -123,7 +123,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
             body: "{\"deployment\":"\
               "{\"revision\":\"master\",\"user\":\"RobinDaugherty\","\
               "\"description\":\"https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/abc123\"}"\
-              "}"
+              "}",
           )
           send_to_new_relic
           expect(request_with_body).to have_been_made
@@ -146,7 +146,7 @@ RSpec.describe CircleciDeploymentNotifier::Build do
             body: "{\"deployment\":"\
               "{\"revision\":\"v1.0.0\",\"user\":\"RobinDaugherty\","\
               "\"description\":\"https://github.com/RobinDaugherty/circleci_deployment_notifier/releases/tag/v1.0.0\"}"\
-              "}"
+              "}",
           )
           send_to_new_relic
           expect(request_with_body).to have_been_made
