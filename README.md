@@ -49,7 +49,7 @@ deployment:
     - # TODO: something to deploy the application to production
     - gem install circleci_deployment_notifier
     - circleci_deployment_notify_slack -a "Application Production" -u $DEPLOYMENT_SLACK_WEBHOOK_URL
-    - circleci_deployment_notify_new_relic -a "Application Staging" --api-key $NEW_RELIC_API_KEY --app-id "87654321"
+    - circleci_deployment_notify_new_relic -a "Application Production" --api-key $NEW_RELIC_API_KEY --app-id "87654321"
 ```
 
 ### Tag Deploys
