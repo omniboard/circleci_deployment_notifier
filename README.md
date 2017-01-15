@@ -33,7 +33,10 @@ gem install circleci_deployment_notifier
 circleci_deployment_notify_slack -a "Application Name" -u "https://hooks.slack.com/services/WEBHOOK"
 ```
 
-Here's an example deployment section from `circle.yml`:
+It's best to use environment variables for sensitive information list Slack webhook URLs.
+
+So here's an example `circle.yml` deployment section that 
+assumes you've set the environment variable `DEPLOYMENT_SLACK_WEBHOOK_URL`:
 ```yml
 deployment:
   staging:
@@ -41,14 +44,14 @@ deployment:
     commands:
     - # TODO: something to deploy the application to staging
     - gem install circleci_deployment_notifier
-    - circleci_deployment_notify_slack -a "Application Staging" -u "https://hooks.slack.com/services/WEBHOOK"
+    - circleci_deployment_notify_slack -a "Application Staging" -u $DEPLOYMENT_SLACK_WEBHOOK_URL
   production:
     tag: /v[0-9]+\.[0-9]+\.[0-9]+/
     owner: MyOrganization
     commands:
     - # TODO: something to deploy the application to production
     - gem install circleci_deployment_notifier
-    - circleci_deployment_notify_slack -a "Application Production" -u "https://hooks.slack.com/services/WEBHOOK"
+    - circleci_deployment_notify_slack -a "Application Production" -u $DEPLOYMENT_SLACK_WEBHOOK_URL
 ```
 
 ## Development
