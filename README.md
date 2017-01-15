@@ -54,6 +54,11 @@ deployment:
     - circleci_deployment_notify_slack -a "Application Production" -u $DEPLOYMENT_SLACK_WEBHOOK_URL
 ```
 
+That `production` section is designed to build and deploy for tags like "v1.0.0" that are created in
+the fork of the repo that belongs to MyOrganization.
+(So tags created in forks do not cause a build or deployment.)
+See [CircleCI docs](https://circleci.com/docs/configuration/#tags) for more info.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
