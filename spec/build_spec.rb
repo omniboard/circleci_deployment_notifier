@@ -50,20 +50,20 @@ RSpec.describe CircleciDeploymentNotifier::Build do
         it 'has the correct body' do
           request_with_body = slack_request.with(
             body: {
-              "payload" => <<~JSON.gsub("\n", ''),
-                {
-                "username":"Application Name Deployments",
-                "attachments":
-                [
-                {
-                "fallback":"master deployed by RobinDaugherty","color":"good",
-                "text":"<https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/abc123|master>",
-                "footer":"deployed by <https://github.com/RobinDaugherty|RobinDaugherty>
-                 in <https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100|build 1100>",
-                "footer_icon":"https://github.com/RobinDaugherty.png"
-                }
-                ]
-                }
+              "payload" => <<-JSON.gsub("\n", ''),
+{
+"username":"Application Name Deployments",
+"attachments":
+[
+{
+"fallback":"master deployed by RobinDaugherty","color":"good",
+"text":"<https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/abc123|master>",
+"footer":"deployed by <https://github.com/RobinDaugherty|RobinDaugherty>
+ in <https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100|build 1100>",
+"footer_icon":"https://github.com/RobinDaugherty.png"
+}
+]
+}
               JSON
             }
           )
@@ -86,21 +86,21 @@ RSpec.describe CircleciDeploymentNotifier::Build do
         it 'has the correct body' do
           request_with_body = slack_request.with(
             body: {
-              "payload" => <<~JSON.gsub("\n", ''),
-                {
-                "username":"Application Name Deployments",
-                "attachments":[
-                {
-                "fallback":"v1.0.0 deployed by RobinDaugherty",
-                "color":"good",
-                "text":"<https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/v1.0.0|v1.0.0>
-                 (<https://github.com/RobinDaugherty/circleci_deployment_notifier/releases/tag/v1.0.0|release notes>)",
-                "footer":"deployed by <https://github.com/RobinDaugherty|RobinDaugherty>
-                 in
-                 <https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100|build 1100>",
-                "footer_icon":"https://github.com/RobinDaugherty.png"}
-                ]
-                }
+              "payload" => <<-JSON.gsub("\n", ''),
+{
+"username":"Application Name Deployments",
+"attachments":[
+{
+"fallback":"v1.0.0 deployed by RobinDaugherty",
+"color":"good",
+"text":"<https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/v1.0.0|v1.0.0>
+ (<https://github.com/RobinDaugherty/circleci_deployment_notifier/releases/tag/v1.0.0|release notes>)",
+"footer":"deployed by <https://github.com/RobinDaugherty|RobinDaugherty>
+ in
+ <https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100|build 1100>",
+"footer_icon":"https://github.com/RobinDaugherty.png"}
+]
+}
               JSON
             }
           )
@@ -136,14 +136,14 @@ RSpec.describe CircleciDeploymentNotifier::Build do
       context 'the New Relic request' do
         it 'has the correct body' do
           request_with_body = new_relic_request.with(
-            body: <<~JSON.gsub("\n", ''),
-              {
-              "deployment":
-              {
-              "revision":"master","user":"RobinDaugherty",
-              "description":"https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/abc123"
-              }
-              }
+            body: <<-JSON.gsub("\n", ''),
+{
+"deployment":
+{
+"revision":"master","user":"RobinDaugherty",
+"description":"https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/abc123"
+}
+}
             JSON
           )
           send_to_new_relic
@@ -164,14 +164,14 @@ RSpec.describe CircleciDeploymentNotifier::Build do
       context 'the New Relic request' do
         it 'has the correct body' do
           request_with_body = new_relic_request.with(
-            body: <<~JSON.gsub("\n", ''),
-              {
-              "deployment":
-              {
-              "revision":"v1.0.0","user":"RobinDaugherty",
-              "description":"https://github.com/RobinDaugherty/circleci_deployment_notifier/releases/tag/v1.0.0"
-              }
-              }
+            body: <<-JSON.gsub("\n", ''),
+{
+"deployment":
+{
+"revision":"v1.0.0","user":"RobinDaugherty",
+"description":"https://github.com/RobinDaugherty/circleci_deployment_notifier/releases/tag/v1.0.0"
+}
+}
             JSON
           )
           send_to_new_relic
