@@ -16,17 +16,11 @@ You can also:
 
 - Deploy releases that are tagged using Github Releases.
 
-## Installation
+## Usage
 
 Requires Ruby 2.0.0 or higher.
 
-```sh
-gem install circleci_deployment_notifier
-```
-
-## Usage
-
-Add the following lines to your `circle.yml` in the deployments section:
+Add the following commands to your `circle.yml` deployment section:
 
 ```sh
 gem install circleci_deployment_notifier
