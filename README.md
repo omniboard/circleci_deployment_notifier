@@ -7,6 +7,10 @@
 
 Sends deployment notifications based on deployments that occur on CircleCI.
 
+![Deployment notifications on Slack](./images/slack-deployment-notifications.png)
+
+![Deployment indications on New Relic](./images/new-relic-deployments.png)
+
 Assumptions:
 
 - Using CircleCI.
