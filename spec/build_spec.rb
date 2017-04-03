@@ -17,10 +17,12 @@ RSpec.describe CircleciDeploymentNotifier::Build do
   def prepare_for_build
     ENV['CIRCLE_SHA1'] = "abc123"
     ENV['CIRCLE_USERNAME'] = "RobinDaugherty"
-    ENV['CIRCLE_REPOSITORY_URL'] = "https://github.com/RobinDaugherty/circleci_deployment_notifier"
+    ENV['CIRCLE_REPOSITORY_URL'] = repository_url
     ENV['CIRCLE_BUILD_NUM'] = "1100"
     ENV['CIRCLE_BUILD_URL'] = "https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100"
   end
+
+  let(:repository_url) { "https://github.com/RobinDaugherty/circleci_deployment_notifier" }
 
   def prepare_for_branch_build
     prepare_for_build
@@ -47,6 +49,32 @@ RSpec.describe CircleciDeploymentNotifier::Build do
         expect(slack_request).to have_been_made
       end
       context 'the Slack request' do
+        context 'when the repository URL is an SSH URL' do
+          let(:repository_url) { "git@github.com:RobinDaugherty/circleci_deployment_notifier.git" }
+          it 'has the correct body' do
+            request_with_body = slack_request.with(
+              body: {
+                "payload" => <<-JSON.delete("\n"),
+{
+"username":"Application Name Deployments",
+"attachments":
+[
+{
+"fallback":"master deployed by RobinDaugherty","color":"good",
+"text":"<https://github.com/RobinDaugherty/circleci_deployment_notifier/tree/abc123|master>",
+"footer":"deployed by <https://github.com/RobinDaugherty|RobinDaugherty>
+ in <https://circleci.com/gh/RobinDaugherty/circleci_deployment_notifier/1100|build 1100>",
+"footer_icon":"https://github.com/RobinDaugherty.png"
+}
+]
+}
+                JSON
+              },
+            )
+            send_to_slack
+            expect(request_with_body).to have_been_made
+          end
+        end
         it 'has the correct body' do
           request_with_body = slack_request.with(
             body: {

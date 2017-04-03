@@ -48,7 +48,9 @@ module CircleciDeploymentNotifier
     end
 
     def repository_url
-      ENV['CIRCLE_REPOSITORY_URL']
+      ENV['CIRCLE_REPOSITORY_URL'].sub(/\Agit@([-\.a-z]+):(.+)\.git\z/) { |m|
+        "https://#{$1}/#{$2}"
+      }
     end
 
     def build_identifier
